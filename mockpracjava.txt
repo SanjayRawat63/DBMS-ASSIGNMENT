@@ -1,0 +1,351 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package jdbc;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+/**
+ *
+ * @author Sanjay Rawat
+ */
+public class MockPrac { 
+    public static void main(String[] args) throws Exception {
+      Class.forName("com.mysql.jdbc.Driver");
+      Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/Mock","root","anish&#*1290");
+      Statement st= con.createStatement();
+      Scanner sc=new Scanner(System.in);
+      char ch;
+      int choice;
+      String s;
+              do
+		{
+			
+			System.out.println("1.Display ");
+			System.out.println("2.Insert ");
+			System.out.println("3.Update");
+			System.out.println("4.Delete");
+			System.out.println("5.Exit");
+			System.out.println("Enter your Choice");
+			choice=sc.nextInt();
+			switch(choice){
+				case 1: 
+                                       ResultSet rs=st.executeQuery("select * from Record");
+			               while(rs.next())				
+			               System.out.println(rs.getString(1)+"    "+rs.getInt(2)+"    "+rs.getString(3));
+                                    
+					break;
+				case 2:
+                                       int Age;
+                                       String name,pgame;
+                                       System.out.println("Enter Player Name: ");
+				       name=sc.next();
+				       System.out.println("Enter Player Age: ");
+				        Age=sc.nextInt();
+					System.out.println("Enter Game: ");
+					pgame=sc.next();
+					String query = "insert into Record(PlayerName,Age,Game)" + " values('"+name+"',"+Age+",'"+pgame+"')";
+                                        PreparedStatement p=con.prepareStatement(query);
+			                p.execute();
+					break;
+				case 3: 
+                                    int a;
+                                    String pname,pgme;
+                                    System.out.println("what do you want to udpdate:");
+                                       System.out.println("1.Age"+"\n"+"2.Game");
+                                       System.out.println("Enter Your choice");
+                                       int h =sc.nextInt();
+                                       if(h==1)
+                                       { 
+                                       System.out.println("Enter Player Name whose Age to be updated: ");
+				       pname=sc.next();
+				       System.out.println("Enter Age: ");
+				       a=sc.nextInt();
+                                       PreparedStatement ut = con.prepareStatement("update Record set Age=? where PlayerName =?");
+                                       ut.setInt(1,a);
+                                       ut.setString(2,pname);
+                                       ut.executeUpdate();
+                                       }
+                                       if(h==2)
+                                       { 
+                                       System.out.println("Enter Player Name whose Playing Game to be updated: ");
+				       pname=sc.next();
+				       System.out.println("Enter Game: ");
+				       pgme=sc.next();
+                                       PreparedStatement ut = con.prepareStatement("update Record set Game=? where PlayerName=?");
+                                       ut.setString(1,pgme);
+                                       ut.setString(2,pname);
+                                       ut.executeUpdate();
+                                       }
+                                       
+                                       break;
+                                case 4:
+                                       System.out.println("Delete by:");
+                                       System.out.println("1.Player Name"+"\n"+"2.Age"+"\n"+"3.Game");
+                                       System.out.println("Enter Your choice");
+                                       int c =sc.nextInt();
+                                      if(c==1)
+                                       {
+                                       String pnm;
+                                       System.out.println("Enter the Player Name:");
+                                       pnm=sc.next();
+                                       PreparedStatement pst = con.prepareStatement("Delete from Record where PlayerName=?");
+                                       pst.setString(1, pnm);
+                                       pst.execute();
+                                       System.out.println("Record Deleted..");
+                                       }
+                                      
+                                       if(c==2)
+                                       {
+                                       int ag;
+                                       System.out.println("Enter the Age:");
+                                       ag=sc.nextInt();
+                                       PreparedStatement pst = con.prepareStatement("Delete from Record where Age=?");
+                                       pst.setInt(1, ag);
+                                       pst.execute();
+                                       System.out.println("Record Deleted..");
+                                       }
+                                       if(c==3)
+                                       {
+                                       String g;
+                                       System.out.println("Enter the Game:");
+                                       g=sc.next();
+                                       PreparedStatement pst = con.prepareStatement("Delete from Record where Game=?");
+                                       pst.setString(1,g);
+                                       pst.execute();
+                                       System.out.println("Record Deleted..");
+                                       }  
+                                       break;
+                                case 5:
+                                    System.exit(0);
+                                       
+			}
+                 System.out.println("Do you want to continue??(y/n):");
+                 s=sc.next();
+                 ch=s.charAt(0);
+		}while(ch=='y'||ch=='Y');
+      
+      st.close();
+      con.close();
+    }
+}
+    /*
+    run:
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+1
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+2
+Enter Player Name: 
+sanjay
+Enter Player Age: 
+21
+Enter Game: 
+tennis
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+2
+Enter Player Name: 
+golu
+Enter Player Age: 
+17
+Enter Game: 
+cricket
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+2
+Enter Player Name: 
+atul
+Enter Player Age: 
+15
+Enter Game: 
+football
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+1
+sanjay    21    tennis
+golu    17    cricket
+atul    15    football
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+3
+what do you want to udpdate:
+1.Age
+2.Game
+Enter Your choice
+1
+Enter Player Name whose Age to be updated: 
+atul
+Enter Age: 
+20
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+1
+sanjay    21    tennis
+golu    17    cricket
+atul    20    football
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+3
+what do you want to udpdate:
+1.Age
+2.Game
+Enter Your choice
+2
+Enter Player Name whose Playing Game to be updated: 
+golu
+Enter Game: 
+badminton
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+1
+sanjay    21    tennis
+golu    17    badminton
+atul    20    football
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+4
+Delete by:
+1.Player Name
+2.Age
+3.Game
+Enter Your choice
+1
+Enter the Player Name:
+sanjay
+Record Deleted..
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+1
+golu    17    badminton
+atul    20    football
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+4
+Delete by:
+1.Player Name
+2.Age
+3.Game
+Enter Your choice
+2
+Enter the Age:
+17
+Record Deleted..
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+1
+atul    20    football
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+4
+Delete by:
+1.Player Name
+2.Age
+3.Game
+Enter Your choice
+3
+Enter the Game:
+football
+Record Deleted..
+Do you want to continue??(y/n):
+y
+1.Display 
+2.Insert 
+3.Update
+4.Delete
+5.Exit
+Enter your Choice
+1
+Do you want to continue??(y/n):
+n
+BUILD SUCCESSFUL (total time: 2 minutes 47 seconds)
+    */
